@@ -9,8 +9,8 @@ use vte::{Params, Parser, Perform};
 
 const BUFF_SIZE: usize = 1024;
 
-//ANSI Escape Sequences
-//https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+// NOTE: ANSI Escape Sequences
+// https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
 
 #[derive(Debug)]
 enum VTTileData {
@@ -196,15 +196,22 @@ impl Perform for Logger {
 				self.cursor_y = params_iterator.next().unwrap_or(0);
 				self.cursor_x = params_iterator.next().unwrap_or(0);
 			}
-			/*
 			'J' => {
-				//println!("Erase-related");
+				println!("Erase-related");
+				match params.iter().next() {
+					Some([2]) => println!("Clear screen!"),
+					_ => (),
+				}
 			}
+			/*
 			'K' => {
 				//println!("Erase in line");
 			}
 			'm' => {
 				//println!("Set color/graphics");
+			}
+			'l' => {
+				// println!("Restore screen")
 			}
 			*/
 			'z' => {
@@ -237,7 +244,7 @@ impl Perform for Logger {
 					VTTileData::DataEnd => {
 						println!("{}", self);
 					}
-					_ => (),
+					// _ => (),
 				};
 			}
 			_ => {
